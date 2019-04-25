@@ -144,7 +144,7 @@ class _MyAppState extends State<MyApp> {
             ),
             SizedBox(width: 20),
             Text(
-              'Facebook ile giriş YAP AMK',
+              'Facebook ile giriş yap',
               style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.bold,
@@ -187,14 +187,16 @@ class _MyAppState extends State<MyApp> {
     final forgotLabel = FlatButton(
       child: Text(
         'Şifremi Unuttum',
-        style: TextStyle(color: Colors.white54),
+        style: TextStyle(
+            color: Colors.black45, fontFamily: 'Montserrat', fontSize: 12),
       ),
       onPressed: () {},
     );
     final createAccount = FlatButton(
       child: Text(
         'Hala üye değil misiniz?',
-        style: TextStyle(color: Colors.white54),
+        style: TextStyle(
+            color: Colors.black45, fontFamily: 'Montserrat', fontSize: 12),
       ),
       onPressed: () {
         Navigator.push(
@@ -284,6 +286,10 @@ class _MyAppState extends State<MyApp> {
                         password,
                         SizedBox(height: 8.0),
                         loginButton,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[createAccount, forgotLabel],
+                        ),
                         SizedBox(height: 8.0),
                         socialLogin,
                         SizedBox(height: 8.0),
@@ -294,9 +300,6 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
             ),
-            createAccount,
-            forgotLabel,
-            spinner,
           ],
         ),
       ),
