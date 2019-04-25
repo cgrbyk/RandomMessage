@@ -144,7 +144,7 @@ class _MyAppState extends State<MyApp> {
             ),
             SizedBox(width: 20),
             Text(
-              'Facebook ile giriş yapmaaaaaa',
+              'Facebook ile giriş YAP AMK',
               style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.bold,
