@@ -2,21 +2,30 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'ClientModel.dart';
 import 'Database.dart';
-import 'UzakDatabase.dart';
+import 'ApiDatabase.dart';
 import 'KULDATA.dart';
 import 'rmesaj.dart';
+import 'bildirim.dart';
 
 class Mesajlasma extends StatefulWidget {
   @override
   SecondRoute createState() => SecondRoute();
 }
 
-class SecondRoute extends State<Mesajlasma> {
+class SecondRoute extends State<Mesajlasma> with WidgetsBindingObserver {
   TextEditingController girilen = new TextEditingController();
-  UzakDatabase _uzakDatabase = UzakDatabase();
+  ApiDatabase _uzakDatabase = ApiDatabase();
   ScrollController sc = new ScrollController();
   Timer _everySecond;
   Timer _every5Second;
+
+  AppLifecycleState _lifecycleState;
+  @override
+  didChangeAppLifecycleState(AppLifecycleState state) {
+    setState(() {
+     _lifecycleState=state; 
+    });
+  }
 
   Alignment algPicker(Client c) {
     //print(c.gonderenid.toString()+"----"+KULDATA.kulId.toString());
@@ -32,12 +41,16 @@ class SecondRoute extends State<Mesajlasma> {
     super.initState();
     _uzakDatabase.setmindextozero();
     DBProvider.db.deleteAll();
-
+    Bildirim bil=new Bildirim();
     _everySecond = Timer.periodic(Duration(seconds: 1), (Timer t) async {
       Client rnd = Client();
       Rmesaj gelenmesaj = new Rmesaj();
       gelenmesaj = await _uzakDatabase.mesajcek();
       if (!gelenmesaj.isnull) {
+        if(_lifecycleState==AppLifecycleState.paused)
+        {
+          bil.bildirimGonder("Mesaj Geldi", gelenmesaj.mesaj, gelenmesaj.mindex.toString());
+        }
         rnd.kelime = " " + gelenmesaj.mesaj;
         rnd.index = gelenmesaj.mindex;
         rnd.gonderenid = gelenmesaj.gonderenid;
@@ -130,8 +143,15 @@ class SecondRoute extends State<Mesajlasma> {
                                         child: Align(
                                             alignment: algPicker(item),
                                             child: Padding(
-                                              padding: const EdgeInsets.only(left: 16.0,right: 16.0),
-                                              child: Text(item.kelime + " ",style: TextStyle(fontFamily: 'Montserrat',fontSize: 20,fontWeight: FontWeight.bold,color: Colors.black,)),
+                                              padding: const EdgeInsets.only(
+                                                  left: 16.0, right: 16.0),
+                                              child: Text(item.kelime + " ",
+                                                  style: TextStyle(
+                                                    fontFamily: 'Montserrat',
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black,
+                                                  )),
                                             )))),
                                 //leading: Text(item.index.toString()),
                               ),
@@ -152,7 +172,8 @@ class SecondRoute extends State<Mesajlasma> {
                   decoration: InputDecoration(
                     hintText: 'Mesajını Yaz',
                     contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(32.0)),
                   ),
                   textInputAction: TextInputAction.send,
                   maxLength: 60,
@@ -176,15 +197,15 @@ class SecondRoute extends State<Mesajlasma> {
                     setState(() {});
                   },
                   style: TextStyle(
-          fontWeight: FontWeight.bold, fontFamily: 'Montserrat', fontSize: 20),
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Montserrat',
+                      fontSize: 20),
                 ),
               )
-              
             ],
           ),
         ),
       ),
-     
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'UzakDatabase.dart';
+import 'ApiDatabase.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'mesajlasma.dart';
 import 'KULDATA.dart';
@@ -12,8 +12,26 @@ class Esles extends StatefulWidget {
 }
 
 class EslesmeEkrani extends State<Esles> {
-  UzakDatabase _uzakDatabase = UzakDatabase();
+  ApiDatabase _uzakDatabase = ApiDatabase();
   bool vil = false;
+
+  @override
+  void initState() {
+    super.initState();
+    ilkGiris();
+  }
+
+  void ilkGiris() async {
+    String sonuc = await _uzakDatabase.eslesmeControl();
+    if (sonuc != "1") {
+      KULDATA.mesajid = sonuc;
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Mesajlasma()),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final eslesButton = Padding(
@@ -68,7 +86,7 @@ class EslesmeEkrani extends State<Esles> {
           color: Colors.white,
           size: 50,
         ));
-    
+
     return Scaffold(
         resizeToAvoidBottomPadding: false,
         appBar: AppBar(

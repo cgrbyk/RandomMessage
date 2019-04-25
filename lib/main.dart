@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'esles.dart';
-import 'UzakDatabase.dart';
+import 'ApiDatabase.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'signUp.dart';
 
@@ -16,7 +16,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   TextEditingController kulmail = TextEditingController();
   TextEditingController kulsifre = TextEditingController();
-  UzakDatabase _database = UzakDatabase();
+  ApiDatabase _database = ApiDatabase();
   bool visible = false;
   bool falsePassword = false;
 
