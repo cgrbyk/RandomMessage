@@ -23,7 +23,7 @@ class EslesmeEkrani extends State<Esles> {
 
   void ilkGiris() async {
     String sonuc = await _uzakDatabase.eslesmeControl();
-    if (sonuc != "1") {
+    if (sonuc != "1" && sonuc!=null ) {
       KULDATA.mesajid = sonuc;
       Navigator.push(
         context,

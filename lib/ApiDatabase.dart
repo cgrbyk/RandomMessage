@@ -104,7 +104,7 @@ class ApiDatabase {
     });
     if (response.body != "NULL QUERY mesajCek") {
       mindex++;
-      var jsondata = json.decode(response.body);
+      var jsondata = json.decode(response.body)[0];
       return Rmesaj(gonderenid: int.parse(jsondata['GonderenId']),mesaj: jsondata['Mesaj'],mindex: int.parse(jsondata['MESAJINDEX']),isnull: false);
     }
     else
