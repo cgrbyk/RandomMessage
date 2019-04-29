@@ -23,7 +23,7 @@ class SecondRoute extends State<Mesajlasma> with WidgetsBindingObserver {
   @override
   didChangeAppLifecycleState(AppLifecycleState state) {
     setState(() {
-     _lifecycleState=state; 
+      _lifecycleState = state;
     });
   }
 
@@ -41,20 +41,23 @@ class SecondRoute extends State<Mesajlasma> with WidgetsBindingObserver {
     super.initState();
     _uzakDatabase.setmindextozero();
     DBProvider.db.deleteAll();
-    Bildirim bil=new Bildirim();
+    Bildirim bil = new Bildirim();
     _everySecond = Timer.periodic(Duration(seconds: 1), (Timer t) async {
       Client rnd = Client();
-      Rmesaj gelenmesaj = new Rmesaj();
-      gelenmesaj = await _uzakDatabase.mesajcek();
-      if (!gelenmesaj.isnull) {
-        if(_lifecycleState==AppLifecycleState.paused)
-        {
-          bil.bildirimGonder("Mesaj Geldi", gelenmesaj.mesaj, gelenmesaj.mindex.toString());
+      List<Rmesaj> gelenmesajDizi = new List<Rmesaj>();
+      gelenmesajDizi = await _uzakDatabase.mesajcek();
+      if (!gelenmesajDizi[0].isnull) {
+        if (_lifecycleState == AppLifecycleState.paused) {
+          bil.bildirimGonder("Mesaj Geldi", gelenmesajDizi[0].mesaj,
+              gelenmesajDizi[0].mindex.toString());
         }
-        rnd.kelime = " " + gelenmesaj.mesaj;
-        rnd.index = gelenmesaj.mindex;
-        rnd.gonderenid = gelenmesaj.gonderenid;
-        await DBProvider.db.newClient(rnd);
+        for (Rmesaj gelenmesaj in gelenmesajDizi) {
+          _uzakDatabase.incmindex();
+          rnd.kelime = " " + gelenmesaj.mesaj;
+          rnd.index = gelenmesaj.mindex;
+          rnd.gonderenid = gelenmesaj.gonderenid;
+          await DBProvider.db.newClient(rnd);
+        }
         sc.animateTo(sc.position.maxScrollExtent,
             duration: Duration(seconds: 1), curve: Curves.ease);
         setState(() {});
@@ -180,8 +183,7 @@ class SecondRoute extends State<Mesajlasma> with WidgetsBindingObserver {
                   onSubmitted: (String s) async {
                     Client rnd = Client(
                         kelime: girilen.value.text + " ",
-                        gonderenid: KULDATA.kulId);
-                    _uzakDatabase.incmindex();
+                        gonderenid: KULDATA.kulId);                  
                     bool ayni = await _uzakDatabase.mesajGonder(s);
                     if (ayni)
                       await DBProvider.db.newClient(rnd);

@@ -104,11 +104,16 @@ class ApiDatabase {
     });
     if (response.body != "NULL QUERY mesajCek") {
       mindex++;
-      var jsondata = json.decode(response.body)[0];
-      return Rmesaj(gonderenid: int.parse(jsondata['GonderenId']),mesaj: jsondata['Mesaj'],mindex: int.parse(jsondata['MESAJINDEX']),isnull: false);
+      var jsondata = json.decode(response.body);
+      List<Rmesaj> donecek = Rmesaj.fromArray(jsondata);
+      return donecek;
+      //return Rmesaj(gonderenid: int.parse(jsondata['GonderenId']),mesaj: jsondata['Mesaj'],mindex: int.parse(jsondata['MESAJINDEX']),isnull: false);
+    } else {
+      Rmesaj donecek = new Rmesaj(gonderenid: 0, mesaj: "0", mindex: 0, isnull: true);
+      List<Rmesaj> doeceklist=new List<Rmesaj>();
+      doeceklist.add(donecek);
+      return doeceklist;
     }
-    else
-    return Rmesaj(isnull: true);
   }
 
   eslesmeBitir() async {
