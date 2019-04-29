@@ -8,6 +8,12 @@ import 'signUp.dart';
 void main() =>
     runApp(MaterialApp(debugShowCheckedModeBanner: false, home: MyApp()));
 
+class NavigationItem {
+  final Text title;
+  final Color color;
+  NavigationItem(this.title, this.color);
+}
+
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
@@ -19,8 +25,36 @@ class _MyAppState extends State<MyApp> {
   ApiDatabase _database = ApiDatabase();
   bool visible = false;
   bool falsePassword = false;
+  int selectedIndex = 0;
+  List<NavigationItem> items = [
+    NavigationItem(Text('Giriş'), Colors.lightBlueAccent),
+    NavigationItem(Text('Kayıt'), Colors.lightBlueAccent)
+  ];
 
   FocusNode kulsifreNode = new FocusNode();
+  Widget _buildItem(NavigationItem item, bool isSelected) {
+    return AnimatedContainer(
+        duration: Duration(milliseconds: 500),
+        width: isSelected
+            ? MediaQuery.of(context).size.width / 2
+            : MediaQuery.of(context).size.width / 2.7,
+        height: 50,
+        decoration: BoxDecoration(
+            color: isSelected ? item.color : Color(0xff405f87),
+            borderRadius: BorderRadius.circular(12)),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            DefaultTextStyle.merge(
+                style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: isSelected ? Colors.white : Colors.white24),
+                child: item.title),
+          ],
+        ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +67,33 @@ class _MyAppState extends State<MyApp> {
           ),
         );
 
+    Widget bottomPanel() {
+      return Container(
+        padding: EdgeInsets.only(left: 16,right: 16),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height / 10,
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+        ),
+        child: Row(
+          
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: items.map((item) {
+              var itemIndex = items.indexOf(item);
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedIndex = itemIndex;
+                    print(itemIndex);
+                  });
+                },
+                child: _buildItem(item, selectedIndex == itemIndex),
+              );
+            }).toList()),
+      );
+    }
+
+    
     final email = TextField(
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
@@ -43,7 +104,7 @@ class _MyAppState extends State<MyApp> {
         ),
         hintText: 'Email',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
       ),
       controller: kulmail,
       textInputAction: TextInputAction.next,
@@ -63,7 +124,7 @@ class _MyAppState extends State<MyApp> {
         ),
         hintText: 'Şifre',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
       ),
       controller: kulsifre,
       focusNode: kulsifreNode,
@@ -86,10 +147,10 @@ class _MyAppState extends State<MyApp> {
           fontWeight: FontWeight.bold, fontFamily: 'Montserrat', fontSize: 20),
     );
     final loginButton = Padding(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
+      padding: EdgeInsets.only(top: 8),
       child: RaisedButton(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(12),
         ),
         onPressed: () async {
           visible = true;
@@ -128,10 +189,10 @@ class _MyAppState extends State<MyApp> {
       ),
     );
     final facebookLoginButton = Padding(
-      padding: EdgeInsets.symmetric(vertical: 8),
+      padding: EdgeInsets.only(top: 8),
       child: RaisedButton(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(12),
         ),
         onPressed: () {},
         padding: EdgeInsets.all(12),
@@ -145,34 +206,6 @@ class _MyAppState extends State<MyApp> {
             SizedBox(width: 20),
             Text(
               'Facebook ile giriş yap',
-              style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 20),
-            )
-          ],
-        ),
-      ),
-    );
-    final googleLoginButton = Padding(
-      padding: EdgeInsets.symmetric(vertical: 8),
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
-        onPressed: () {},
-        padding: EdgeInsets.all(12),
-        color: Color(0xFFff3e30),
-        child: Row(
-          children: <Widget>[
-            ImageIcon(
-              AssetImage("assets/google.png"),
-              color: Colors.white,
-            ),
-            SizedBox(width: 50),
-            Text(
-              'Google ile giriş yap',
               style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.bold,
@@ -227,36 +260,27 @@ class _MyAppState extends State<MyApp> {
     );
 
     return Scaffold(
+      
+      bottomNavigationBar: bottomPanel(),
       resizeToAvoidBottomPadding: false,
       backgroundColor: Color(0xFF263d5a),
       body: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          stops: [0.1, 0.5, 0.7, 0.9],
-          colors: [
-            Colors.lightBlueAccent,
-            Colors.lightBlue,
-            Colors.blueAccent,
-            Colors.blue,
-          ],
-        )),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Center(
-              child: Container(
+            Container(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(16),
                   child: Card(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32)),
+                        borderRadius: BorderRadius.circular(12)),
                     color: Colors.white,
                     child: ListView(
                       shrinkWrap: true,
                       padding: EdgeInsets.only(
                           left: 24.0, right: 24.0, top: 0.0, bottom: 24.0),
                       children: <Widget>[
+                        SizedBox(height: 16),
                         Align(
                           alignment: Alignment.center,
                           child: Text(
@@ -268,7 +292,6 @@ class _MyAppState extends State<MyApp> {
                                 color: Colors.black),
                           ),
                         ),
-                        SizedBox(height: 8),
                         Align(
                           alignment: Alignment.center,
                           child: Text(
@@ -287,8 +310,8 @@ class _MyAppState extends State<MyApp> {
                         SizedBox(height: 8.0),
                         loginButton,
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[createAccount, forgotLabel],
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[forgotLabel],
                         ),
                         SizedBox(height: 8.0),
                         socialLogin,
@@ -299,7 +322,7 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
               ),
-            ),
+            
           ],
         ),
       ),
