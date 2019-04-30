@@ -3,7 +3,6 @@ import 'esles.dart';
 import 'ApiDatabase.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-
 //import 'package:flutter_screenutil/flutter_screenutil.dart';
 void main() =>
     runApp(MaterialApp(debugShowCheckedModeBanner: false, home: MyApp()));
@@ -35,7 +34,7 @@ class _MyAppState extends State<MyApp> {
   FocusNode kulsifreNode = new FocusNode();
   Widget _buildItem(NavigationItem item, bool isSelected) {
     return AnimatedContainer(
-        duration: Duration(milliseconds: 500),
+        duration: Duration(milliseconds: 300),
         width: isSelected
             ? MediaQuery.of(context).size.width / 2
             : MediaQuery.of(context).size.width / 2.7,
@@ -55,6 +54,28 @@ class _MyAppState extends State<MyApp> {
                 child: item.title),
           ],
         ));
+  }
+  void _showDialog() {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Başarısız giriş"),
+          content: new Text("Şifre veya kullanıcı adı yanlış lütfen tekrar deneyin "),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Kapat"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Widget callPage(int _selectedIndex) {
@@ -147,9 +168,9 @@ class _MyAppState extends State<MyApp> {
             password(),
             SizedBox(height: 8.0),
             signUpButton(),
-            ],
+          ],
         );
-      
+
         break;
       default:
         return MyApp();
@@ -206,63 +227,64 @@ class _MyAppState extends State<MyApp> {
             MaterialPageRoute(builder: (context) => Esles()),
           );
         } else {
-          print("Kullanici adi veya sifre yanlis");
+          print("Kullanici adi veya sifre yanlis");      
+          _showDialog();   
         }
       },
       style: TextStyle(
           fontWeight: FontWeight.bold, fontFamily: 'Montserrat', fontSize: 20),
     );
   }
-  Widget name()
- {
-   return TextField(
-    autofocus: false,
-    decoration: InputDecoration(
-      prefixIcon: Icon(Icons.person,
-      color: Colors.lightBlueAccent,),
-      hintText: 'Adınız',
-      contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
-      
-    ),
-    textInputAction: TextInputAction.next,
-    style: TextStyle(
-        fontWeight: FontWeight.bold, fontFamily: 'Montserrat', fontSize: 20),
-  );
-  
- }
-  Widget surname()
-  {
+
+  Widget name() {
     return TextField(
-    autofocus: false,
-    decoration: InputDecoration(
-      prefixIcon: Icon(Icons.person,
-      color: Colors.lightBlueAccent,),
-      hintText: 'Soyadınız',
-      contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
-      
-    ),
-    textInputAction: TextInputAction.next,
-    style: TextStyle(
-        fontWeight: FontWeight.bold, fontFamily: 'Montserrat', fontSize: 20),
-  );
-  
+      autofocus: false,
+      decoration: InputDecoration(
+        prefixIcon: Icon(
+          Icons.person,
+          color: Colors.lightBlueAccent,
+        ),
+        hintText: 'Adınız',
+        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
+      ),
+      textInputAction: TextInputAction.next,
+      style: TextStyle(
+          fontWeight: FontWeight.bold, fontFamily: 'Montserrat', fontSize: 20),
+    );
   }
-  Widget signUpButton()
-  {
+
+  Widget surname() {
+    return TextField(
+      autofocus: false,
+      decoration: InputDecoration(
+        prefixIcon: Icon(
+          Icons.person,
+          color: Colors.lightBlueAccent,
+        ),
+        hintText: 'Soyadınız',
+        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
+      ),
+      textInputAction: TextInputAction.next,
+      style: TextStyle(
+          fontWeight: FontWeight.bold, fontFamily: 'Montserrat', fontSize: 20),
+    );
+  }
+
+  Widget signUpButton() {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: RaisedButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
-        onPressed: (){},
+        onPressed: () {},
         padding: EdgeInsets.all(12),
         color: Colors.lightBlueAccent,
         child: Row(children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(left:120.0),
+            padding: const EdgeInsets.only(left: 120.0),
             child: Text(
               'Kayıt Ol',
               style: TextStyle(
@@ -273,12 +295,15 @@ class _MyAppState extends State<MyApp> {
             ),
           ),
           SizedBox(width: 60),
-          Icon(Icons.navigate_next,color: Colors.white,)
+          Icon(
+            Icons.navigate_next,
+            color: Colors.white,
+          )
         ]),
       ),
-      );
-  
+    );
   }
+
   Widget loginButton() {
     return Padding(
       padding: EdgeInsets.only(top: 8),
@@ -298,6 +323,7 @@ class _MyAppState extends State<MyApp> {
             );
           } else {
             print("Kullanici adi veya sifre yanlis");
+            _showDialog();
           }
         },
         padding: EdgeInsets.all(12),
