@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'esles.dart';
 import 'ApiDatabase.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'signUp.dart';
+
 
 //import 'package:flutter_screenutil/flutter_screenutil.dart';
 void main() =>
@@ -26,6 +26,7 @@ class _MyAppState extends State<MyApp> {
   bool visible = false;
   bool falsePassword = false;
   int selectedIndex = 0;
+
   List<NavigationItem> items = [
     NavigationItem(Text('Giriş'), Colors.lightBlueAccent),
     NavigationItem(Text('Kayıt'), Colors.lightBlueAccent)
@@ -56,45 +57,107 @@ class _MyAppState extends State<MyApp> {
         ));
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Widget horizontalLine() => Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: Container(
-            width: MediaQuery.of(context).size.width / 6,
-            height: 1.0,
-            color: Colors.black26.withOpacity(.2),
-          ),
+  Widget callPage(int _selectedIndex) {
+    switch (_selectedIndex) {
+      case 0:
+        return ListView(
+          shrinkWrap: true,
+          padding:
+              EdgeInsets.only(left: 24.0, right: 24.0, top: 0.0, bottom: 24.0),
+          children: <Widget>[
+            SizedBox(height: 16),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                'Random',
+                style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    color: Colors.black),
+              ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                'Message',
+                style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 50,
+                    color: Colors.black),
+              ),
+            ),
+            SizedBox(height: 24.0),
+            email(),
+            SizedBox(height: 16.0),
+            password(),
+            SizedBox(height: 8.0),
+            loginButton(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                forgotLabel(),
+              ],
+            ),
+            SizedBox(height: 8.0),
+            socialLogin(),
+            SizedBox(height: 8.0),
+            facebookLoginButton(),
+          ],
         );
-
-    Widget bottomPanel() {
-      return Container(
-        padding: EdgeInsets.only(left: 16,right: 16),
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height / 10,
-        decoration: BoxDecoration(
-          color: Colors.transparent,
-        ),
-        child: Row(
-          
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: items.map((item) {
-              var itemIndex = items.indexOf(item);
-              return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedIndex = itemIndex;
-                    print(itemIndex);
-                  });
-                },
-                child: _buildItem(item, selectedIndex == itemIndex),
-              );
-            }).toList()),
-      );
+      case 1:
+        return ListView(
+          shrinkWrap: true,
+          padding:
+              EdgeInsets.only(left: 24.0, right: 24.0, top: 0.0, bottom: 24.0),
+          children: <Widget>[
+            SizedBox(height: 16),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                'Random',
+                style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    color: Colors.black),
+              ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                'Message',
+                style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 50,
+                    color: Colors.black),
+              ),
+            ),
+            SizedBox(height: 24.0),
+            name(),
+            SizedBox(height: 8.0),
+            surname(),
+            SizedBox(height: 8.0),
+            email(),
+            SizedBox(height: 8.0),
+            password(),
+            SizedBox(height: 8.0),
+            password(),
+            SizedBox(height: 8.0),
+            signUpButton(),
+            ],
+        );
+      
+        break;
+      default:
+        return MyApp();
     }
+  }
 
-    
-    final email = TextField(
+  Widget email() {
+    return TextField(
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
       decoration: InputDecoration(
@@ -114,7 +177,10 @@ class _MyAppState extends State<MyApp> {
       style: TextStyle(
           fontWeight: FontWeight.bold, fontFamily: 'Montserrat', fontSize: 20),
     );
-    final password = TextField(
+  }
+
+  Widget password() {
+    return TextField(
       autofocus: false,
       obscureText: true,
       decoration: InputDecoration(
@@ -146,7 +212,75 @@ class _MyAppState extends State<MyApp> {
       style: TextStyle(
           fontWeight: FontWeight.bold, fontFamily: 'Montserrat', fontSize: 20),
     );
-    final loginButton = Padding(
+  }
+  Widget name()
+ {
+   return TextField(
+    autofocus: false,
+    decoration: InputDecoration(
+      prefixIcon: Icon(Icons.person,
+      color: Colors.lightBlueAccent,),
+      hintText: 'Adınız',
+      contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
+      
+    ),
+    textInputAction: TextInputAction.next,
+    style: TextStyle(
+        fontWeight: FontWeight.bold, fontFamily: 'Montserrat', fontSize: 20),
+  );
+  
+ }
+  Widget surname()
+  {
+    return TextField(
+    autofocus: false,
+    decoration: InputDecoration(
+      prefixIcon: Icon(Icons.person,
+      color: Colors.lightBlueAccent,),
+      hintText: 'Soyadınız',
+      contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
+      
+    ),
+    textInputAction: TextInputAction.next,
+    style: TextStyle(
+        fontWeight: FontWeight.bold, fontFamily: 'Montserrat', fontSize: 20),
+  );
+  
+  }
+  Widget signUpButton()
+  {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 16.0),
+      child: RaisedButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        onPressed: (){},
+        padding: EdgeInsets.all(12),
+        color: Colors.lightBlueAccent,
+        child: Row(children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left:120.0),
+            child: Text(
+              'Kayıt Ol',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20),
+            ),
+          ),
+          SizedBox(width: 60),
+          Icon(Icons.navigate_next,color: Colors.white,)
+        ]),
+      ),
+      );
+  
+  }
+  Widget loginButton() {
+    return Padding(
       padding: EdgeInsets.only(top: 8),
       child: RaisedButton(
         shape: RoundedRectangleBorder(
@@ -188,7 +322,10 @@ class _MyAppState extends State<MyApp> {
         ]),
       ),
     );
-    final facebookLoginButton = Padding(
+  }
+
+  Widget facebookLoginButton() {
+    return Padding(
       padding: EdgeInsets.only(top: 8),
       child: RaisedButton(
         shape: RoundedRectangleBorder(
@@ -216,35 +353,21 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
+  }
 
-    final forgotLabel = FlatButton(
+  Widget forgotLabel() {
+    return FlatButton(
       child: Text(
         'Şifremi Unuttum',
         style: TextStyle(
-            color: Colors.black45, fontFamily: 'Montserrat', fontSize: 12),
+            color: Colors.black87, fontFamily: 'Montserrat', fontSize: 16),
       ),
       onPressed: () {},
     );
-    final createAccount = FlatButton(
-      child: Text(
-        'Hala üye değil misiniz?',
-        style: TextStyle(
-            color: Colors.black45, fontFamily: 'Montserrat', fontSize: 12),
-      ),
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => SignUp()),
-        );
-      },
-    );
-    final spinner = Visibility(
-        visible: visible,
-        child: SpinKitRipple(
-          color: Colors.white,
-          size: 50,
-        ));
-    final socialLogin = Row(
+  }
+
+  Widget socialLogin() {
+    return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         horizontalLine(),
@@ -258,9 +381,50 @@ class _MyAppState extends State<MyApp> {
         horizontalLine()
       ],
     );
+  }
 
+  Widget horizontalLine() => Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        child: Container(
+          width: MediaQuery.of(context).size.width / 6,
+          height: 1.0,
+          color: Colors.black26.withOpacity(.2),
+        ),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    Widget bottomPanel() {
+      return Container(
+        padding: EdgeInsets.only(left: 16, right: 16),
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height / 10,
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+        ),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: items.map((item) {
+              var itemIndex = items.indexOf(item);
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedIndex = itemIndex;
+                  });
+                },
+                child: _buildItem(item, selectedIndex == itemIndex),
+              );
+            }).toList()),
+      );
+    }
+
+    final spinner = Visibility(
+        visible: visible,
+        child: SpinKitRipple(
+          color: Colors.white,
+          size: 50,
+        ));
     return Scaffold(
-      
       bottomNavigationBar: bottomPanel(),
       resizeToAvoidBottomPadding: false,
       backgroundColor: Color(0xFF263d5a),
@@ -269,60 +433,15 @@ class _MyAppState extends State<MyApp> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Card(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12)),
                     color: Colors.white,
-                    child: ListView(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.only(
-                          left: 24.0, right: 24.0, top: 0.0, bottom: 24.0),
-                      children: <Widget>[
-                        SizedBox(height: 16),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Random',
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold,
-                                fontSize: 30,
-                                color: Colors.black),
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Message',
-                            style: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold,
-                                fontSize: 50,
-                                color: Colors.black),
-                          ),
-                        ),
-                        SizedBox(height: 24.0),
-                        email,
-                        SizedBox(height: 16.0),
-                        password,
-                        SizedBox(height: 8.0),
-                        loginButton,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[forgotLabel],
-                        ),
-                        SizedBox(height: 8.0),
-                        socialLogin,
-                        SizedBox(height: 8.0),
-                        facebookLoginButton,
-                      ],
-                    ),
-                  ),
-                ),
+                    child: callPage(selectedIndex)),
               ),
-            
+            ),
           ],
         ),
       ),
