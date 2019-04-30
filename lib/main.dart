@@ -55,6 +55,7 @@ class _MyAppState extends State<MyApp> {
           ],
         ));
   }
+
   void _showDialog() {
     // flutter defined function
     showDialog(
@@ -63,7 +64,8 @@ class _MyAppState extends State<MyApp> {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Başarısız giriş"),
-          content: new Text("Şifre veya kullanıcı adı yanlış lütfen tekrar deneyin "),
+          content: new Text(
+              "Şifre veya kullanıcı adı yanlış lütfen tekrar deneyin "),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
@@ -227,8 +229,8 @@ class _MyAppState extends State<MyApp> {
             MaterialPageRoute(builder: (context) => Esles()),
           );
         } else {
-          print("Kullanici adi veya sifre yanlis");      
-          _showDialog();   
+          print("Kullanici adi veya sifre yanlis");
+          _showDialog();
         }
       },
       style: TextStyle(
