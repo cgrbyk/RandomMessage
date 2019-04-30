@@ -100,6 +100,7 @@ class ApiDatabase {
       'MesajId': KULDATA.mesajid.toString(),
       'Mindex': mindex.toString(),
       'method': 'mesajCek',
+      'KulId': KULDATA.kulId.toString(),
       'auth': digest.toString()
     });
     if (response.body != "NULL QUERY mesajCek") {
