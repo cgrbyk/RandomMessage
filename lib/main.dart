@@ -56,6 +56,7 @@ class _MyAppState extends State<MyApp> {
         ));
   }
   void _showDialog() {
+    //
     // flutter defined function
     showDialog(
       context: context,
@@ -66,7 +67,8 @@ class _MyAppState extends State<MyApp> {
           content: new Text("Şifre veya kullanıcı adı yanlış lütfen tekrar deneyin "),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
-            new FlatButton(
+            new 
+             FlatButton(
               child: new Text("Kapat"),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -81,7 +83,9 @@ class _MyAppState extends State<MyApp> {
   Widget callPage(int _selectedIndex) {
     switch (_selectedIndex) {
       case 0:
-        return ListView(
+        return Container(
+          height: MediaQuery.of(context).size.height/1.3,
+          child: ListView(
           shrinkWrap: true,
           padding:
               EdgeInsets.only(left: 24.0, right: 24.0, top: 0.0, bottom: 24.0),
@@ -126,10 +130,14 @@ class _MyAppState extends State<MyApp> {
             SizedBox(height: 8.0),
             facebookLoginButton(),
           ],
+        )
+      ,
         );
-      case 1:
-        return ListView(
-          shrinkWrap: true,
+         case 1:
+        return Container(
+          height: MediaQuery.of(context).size.height / 1.3,
+          child: ListView(
+          scrollDirection: Axis.vertical,
           padding:
               EdgeInsets.only(left: 24.0, right: 24.0, top: 0.0, bottom: 24.0),
           children: <Widget>[
@@ -169,15 +177,16 @@ class _MyAppState extends State<MyApp> {
             SizedBox(height: 8.0),
             signUpButton(),
           ],
-        );
-
+        )
+,
+        ); 
+        
         break;
       default:
         return MyApp();
     }
   }
-
-  Widget email() {
+   Widget email() {
     return TextField(
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
@@ -444,12 +453,7 @@ class _MyAppState extends State<MyApp> {
       );
     }
 
-    final spinner = Visibility(
-        visible: visible,
-        child: SpinKitRipple(
-          color: Colors.white,
-          size: 50,
-        ));
+   
     return Scaffold(
       bottomNavigationBar: bottomPanel(),
       resizeToAvoidBottomPadding: false,
