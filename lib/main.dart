@@ -69,8 +69,7 @@ class _MyAppState extends State<MyApp> {
               "Şifre veya kullanıcı adı yanlış lütfen tekrar deneyin "),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
-            new 
-             FlatButton(
+            new FlatButton(
               child: new Text("Kapat"),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -86,109 +85,108 @@ class _MyAppState extends State<MyApp> {
     switch (_selectedIndex) {
       case 0:
         return Container(
-          height: MediaQuery.of(context).size.height/1.3,
+          height: MediaQuery.of(context).size.height / 1.3,
           child: ListView(
-          shrinkWrap: true,
-          padding:
-              EdgeInsets.only(left: 24.0, right: 24.0, top: 0.0, bottom: 24.0),
-          children: <Widget>[
-            SizedBox(height: 16),
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                'Random',
-                style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
-                    color: Colors.black),
+            shrinkWrap: true,
+            padding: EdgeInsets.only(
+                left: 24.0, right: 24.0, top: 0.0, bottom: 24.0),
+            children: <Widget>[
+              SizedBox(height: 16),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Random',
+                  style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30,
+                      color: Colors.black),
+                ),
               ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                'Message',
-                style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 50,
-                    color: Colors.black),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Message',
+                  style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 50,
+                      color: Colors.black),
+                ),
               ),
-            ),
-            SizedBox(height: 24.0),
-            email(),
-            SizedBox(height: 16.0),
-            password(),
-            SizedBox(height: 8.0),
-            loginButton(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                forgotLabel(),
-              ],
-            ),
-            SizedBox(height: 8.0),
-            socialLogin(),
-            SizedBox(height: 8.0),
-            facebookLoginButton(),
-          ],
-        )
-      ,
+              SizedBox(height: 24.0),
+              email(),
+              SizedBox(height: 16.0),
+              password(),
+              SizedBox(height: 8.0),
+              loginButton(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  forgotLabel(),
+                ],
+              ),
+              SizedBox(height: 8.0),
+              socialLogin(),
+              SizedBox(height: 8.0),
+              facebookLoginButton(),
+            ],
+          ),
         );
-         case 1:
+      case 1:
         return Container(
           height: MediaQuery.of(context).size.height / 1.3,
           child: ListView(
-          scrollDirection: Axis.vertical,
-          padding:
-              EdgeInsets.only(left: 24.0, right: 24.0, top: 0.0, bottom: 24.0),
-          children: <Widget>[
-            SizedBox(height: 16),
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                'Random',
-                style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
-                    color: Colors.black),
+            scrollDirection: Axis.vertical,
+            padding: EdgeInsets.only(
+                left: 24.0, right: 24.0, top: 0.0, bottom: 24.0),
+            children: <Widget>[
+              SizedBox(height: 16),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Random',
+                  style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30,
+                      color: Colors.black),
+                ),
               ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Text(
-                'Message',
-                style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 50,
-                    color: Colors.black),
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Message',
+                  style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.bold,
+                      fontSize: 50,
+                      color: Colors.black),
+                ),
               ),
-            ),
-            SizedBox(height: 24.0),
-            name(),
-            SizedBox(height: 8.0),
-            surname(),
-            SizedBox(height: 8.0),
-            email(),
-            SizedBox(height: 8.0),
-            password(),
-            SizedBox(height: 8.0),
-            password(),
-            SizedBox(height: 8.0),
-            signUpButton(),
-          ],
-        )
-,
-        ); 
-        
+              SizedBox(height: 24.0),
+              name(),
+              SizedBox(height: 8.0),
+              surname(),
+              SizedBox(height: 8.0),
+              email(),
+              SizedBox(height: 8.0),
+              password(),
+              SizedBox(height: 8.0),
+              password(),
+              SizedBox(height: 8.0),
+              signUpButton(),
+            ],
+          ),
+        );
+
         break;
       default:
         return MyApp();
     }
   }
-   Widget email() {
+
+  Widget email() {
     return TextField(
       keyboardType: TextInputType.emailAddress,
       autofocus: false,
@@ -421,9 +419,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   Widget horizontalLine() => Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        padding: EdgeInsets.all(8),
         child: Container(
-          width: MediaQuery.of(context).size.width / 6,
+          width: MediaQuery.of(context).size.width / 10,
           height: 1.0,
           color: Colors.black26.withOpacity(.2),
         ),
@@ -455,7 +453,6 @@ class _MyAppState extends State<MyApp> {
       );
     }
 
-   
     return Scaffold(
       bottomNavigationBar: bottomPanel(),
       resizeToAvoidBottomPadding: false,

@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'ClientModel.dart';
 import 'package:sqflite/sqflite.dart';
 import 'KULDATA.dart';
+import 'kontrolDonus.dart';
 
 class DBProvider {
   DBProvider._();
@@ -157,7 +158,7 @@ class DBProvider {
     db.rawDelete("Delete FROM Client WHERE id=" + index.toString());
   }
 
-  mesajKontrol(String mesaj) async {
+  Future<KontrolDonus> mesajKontrol(String mesaj) async {
     List mesajKelimeleri = mesaj.split(" ");
     List silinecekler = new List<String>();
     for (String klm in mesajKelimeleri) {
@@ -177,11 +178,11 @@ class DBProvider {
         for (String mk in mesajKelimeleri)
           if (ak == mk && c.gonderenid == KULDATA.kulId) {
             print("ayni kelime kullanımı");
-            return false;
+            return KontrolDonus(issame: true,mesaj: c.kelime,kelime: ak);
           }
       }
     }
     print("ayni kelime kullanılmamış");
-    return true;
+    return KontrolDonus(issame: false);
   }
 }

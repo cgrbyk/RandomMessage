@@ -4,6 +4,7 @@ import 'package:crypto/crypto.dart';
 import 'KULDATA.dart';
 import 'Database.dart';
 import 'rmesaj.dart';
+import 'kontrolDonus.dart';
 
 class ApiDatabase {
   int mindex = 0;
@@ -72,10 +73,10 @@ class ApiDatabase {
     }
   }
 
-  mesajGonder(String mesaj) async {
-    bool mesajsonuc = await DBProvider.db.mesajKontrol(mesaj);
+   mesajGonder(String mesaj) async {
+    KontrolDonus mesajsonuc = await DBProvider.db.mesajKontrol(mesaj);
     var digest = sha1.convert(utf8.encode(KULDATA.kulEmail));
-    if (mesajsonuc) {
+    if (!mesajsonuc.issame) {
       await post("http://gelengigames.com/deneme.php", body: {
         'mesajID': KULDATA.mesajid.toString(),
         'mesaj': mesaj,
@@ -83,14 +84,14 @@ class ApiDatabase {
         'method': 'mesajat',
         'auth': digest.toString()
       });
-      return true;
+      return mesajsonuc;
     } else {
-      await post("http://gelengigames.com/deneme.php", body: {
+      /*await post("http://gelengigames.com/deneme.php", body: {
         'mesajID': KULDATA.mesajid.toString(),
         'method': 'eslesmeBitir',
         'auth': digest.toString()
-      });
-      return false;
+      });*/
+      return mesajsonuc;
     }
   }
 

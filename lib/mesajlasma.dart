@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:random_message/kontrolDonus.dart';
 import 'ClientModel.dart';
 import 'Database.dart';
 import 'ApiDatabase.dart';
@@ -25,6 +26,31 @@ class SecondRoute extends State<Mesajlasma> with WidgetsBindingObserver {
     setState(() {
       _lifecycleState = state;
     });
+  }
+
+  void _showDialog(String title,String message) {
+    //
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text(title),
+          content: new Text(
+              message),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Kapat"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Alignment algPicker(Client c) {
@@ -184,12 +210,11 @@ class SecondRoute extends State<Mesajlasma> with WidgetsBindingObserver {
                     Client rnd = Client(
                         kelime: girilen.value.text + " ",
                         gonderenid: KULDATA.kulId);                  
-                    bool ayni = await _uzakDatabase.mesajGonder(s);
-                    if (ayni)
+                    KontrolDonus ayni = await _uzakDatabase.mesajGonder(s);
+                    if (!ayni.issame)
                       await DBProvider.db.newClient(rnd);
                     else {
-                      await DBProvider.db.deleteAll();
-                      Navigator.pop(context);
+                      _showDialog(ayni.kelime, ayni.mesaj);
                     }
                     girilen.clear();
                     FocusScope.of(context).requestFocus(new FocusNode());
