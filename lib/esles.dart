@@ -53,8 +53,9 @@ class EslesmeEkrani extends State<Esles> {
           onPressed: () async {
             vil = true;
             String sonuc = await _uzakDatabase.esles();
-            if (sonuc == "20") {
+            if (sonuc == "20") {             
               KULDATA.mesajid = await _uzakDatabase.eslesmeControl();
+              KULDATA.ortakAdi = await _uzakDatabase.ortak(KULDATA.mesajid);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => Mesajlasma()),
@@ -65,6 +66,7 @@ class EslesmeEkrani extends State<Esles> {
                 print("2 saniye");
                 String sonuc = await _uzakDatabase.eslesmeControl();
                 if (sonuc != "1") {
+                  KULDATA.ortakAdi = await _uzakDatabase.ortak(sonuc);
                   KULDATA.mesajid = sonuc;
                   break;
                 }
