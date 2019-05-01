@@ -88,6 +88,7 @@ class ApiDatabase {
         'method': 'mesajat',
         'auth': digest.toString()
       });
+      mindex++;
       return mesajsonuc;
     } else {
       /*await post("http://gelengigames.com/deneme.php", body: {
@@ -100,6 +101,7 @@ class ApiDatabase {
   }
 
   mesajcek() async {
+    print("mindex :"+mindex.toString());
     var digest = sha1.convert(utf8.encode(KULDATA.kulEmail));
     final response = await post("http://gelengigames.com/deneme.php", body: {
       'MesajId': KULDATA.mesajid.toString(),
@@ -109,7 +111,6 @@ class ApiDatabase {
       'auth': digest.toString()
     });
     if (response.body != "NULL QUERY mesajCek") {
-      mindex++;
       var jsondata = json.decode(response.body);
       List<Rmesaj> donecek = Rmesaj.fromArray(jsondata);
       return donecek;
