@@ -119,7 +119,7 @@ class _MyAppState extends State<MyApp> {
               SizedBox(height: 24.0),
               email(),
               SizedBox(height: 16.0),
-              password(),
+              password(kulsifre),
               SizedBox(height: 8.0),
               loginButton(),
               Row(
@@ -173,9 +173,9 @@ class _MyAppState extends State<MyApp> {
               SizedBox(height: 8.0),
               email(),
               SizedBox(height: 8.0),
-              password(),
+              password(kulsifre),
               SizedBox(height: 8.0),
-              password(),
+              password(rekulsifre),
               SizedBox(height: 8.0),
               signUpButton(),
             ],
@@ -211,7 +211,7 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Widget password() {
+  Widget password(TextEditingController tecontroller) {
     return TextField(
       autofocus: false,
       obscureText: true,
@@ -224,7 +224,7 @@ class _MyAppState extends State<MyApp> {
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
       ),
-      controller: kulsifre,
+      controller: tecontroller,
       focusNode: kulsifreNode,
       textInputAction: TextInputAction.done,
       onSubmitted: (String s) async {
@@ -292,11 +292,15 @@ class _MyAppState extends State<MyApp> {
           borderRadius: BorderRadius.circular(12),
         ),
         onPressed: () {
-          if (!(kulsifre.text == rekulsifre.text)) {
-            _database.kayit(
-                kulAdi.text, kulSoyadi.text, kulmail.text, kulsifre.text);
+          if (kulsifre.text.isEmpty || kulAdi.text.isEmpty || kulSoyadi.text.isEmpty || kulmail.text.isEmpty || rekulsifre.text.isEmpty) {
+            _showDialog("Boş bırakılamaz", "Lütfen bütün alanları doldurun");
           } else {
-            _showDialog("şifre", "Şifreler aynı olmalıdır");
+            if (kulsifre.text == rekulsifre.text) {
+              _database.kayit(
+                  kulAdi.text, kulSoyadi.text, kulmail.text, kulsifre.text);
+            } else {
+              _showDialog("şifre", "Şifreler aynı olmalıdır");
+            }
           }
         },
         padding: EdgeInsets.all(12),
@@ -342,7 +346,7 @@ class _MyAppState extends State<MyApp> {
             );
           } else {
             print("Kullanici adi veya sifre yanlis");
-            _showDialog("Başarısız giriş","KullanıcıAdı veya şifre yanlış");
+            _showDialog("Başarısız giriş", "KullanıcıAdı veya şifre yanlış");
           }
         },
         padding: EdgeInsets.all(12),
