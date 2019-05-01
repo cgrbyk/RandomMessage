@@ -21,6 +21,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   TextEditingController kulmail = TextEditingController();
   TextEditingController kulsifre = TextEditingController();
+  TextEditingController rekulsifre = TextEditingController();
+  TextEditingController kulAdi = TextEditingController();
+  TextEditingController kulSoyadi = TextEditingController();
   ApiDatabase _database = ApiDatabase();
   bool visible = false;
   bool falsePassword = false;
@@ -56,7 +59,7 @@ class _MyAppState extends State<MyApp> {
         ));
   }
 
-  void _showDialog() {
+  void _showDialog(String title, String message) {
     //
     // flutter defined function
     showDialog(
@@ -64,9 +67,8 @@ class _MyAppState extends State<MyApp> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Başarısız giriş"),
-          content: new Text(
-              "Şifre veya kullanıcı adı yanlış lütfen tekrar deneyin "),
+          title: new Text(title),
+          content: new Text(message),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
@@ -237,7 +239,6 @@ class _MyAppState extends State<MyApp> {
           );
         } else {
           print("Kullanici adi veya sifre yanlis");
-          _showDialog();
         }
       },
       style: TextStyle(
@@ -248,6 +249,7 @@ class _MyAppState extends State<MyApp> {
   Widget name() {
     return TextField(
       autofocus: false,
+      controller: kulAdi,
       decoration: InputDecoration(
         prefixIcon: Icon(
           Icons.person,
@@ -266,6 +268,7 @@ class _MyAppState extends State<MyApp> {
   Widget surname() {
     return TextField(
       autofocus: false,
+      controller: kulSoyadi,
       decoration: InputDecoration(
         prefixIcon: Icon(
           Icons.person,
@@ -288,7 +291,14 @@ class _MyAppState extends State<MyApp> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
-        onPressed: () {},
+        onPressed: () {
+          if (!(kulsifre.text == rekulsifre.text)) {
+            _database.kayit(
+                kulAdi.text, kulSoyadi.text, kulmail.text, kulsifre.text);
+          } else {
+            _showDialog("şifre", "Şifreler aynı olmalıdır");
+          }
+        },
         padding: EdgeInsets.all(12),
         color: Colors.lightBlueAccent,
         child: Row(children: <Widget>[
@@ -332,7 +342,7 @@ class _MyAppState extends State<MyApp> {
             );
           } else {
             print("Kullanici adi veya sifre yanlis");
-            _showDialog();
+            _showDialog("Başarısız giriş","KullanıcıAdı veya şifre yanlış");
           }
         },
         padding: EdgeInsets.all(12),

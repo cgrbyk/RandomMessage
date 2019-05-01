@@ -24,15 +24,19 @@ class ApiDatabase {
       'method': 'giris',
       'auth': digest.toString()
     });
-    var sonuc = jsonDecode(response.body);
-    int kulID = int.parse(sonuc['kulID']);
-    if (kulID != 10) {
-      KULDATA.kulEmail = kulEmail;
-      KULDATA.kulId = kulID;
-      await kullverisicek();
-      return true;
-    } else
-      return false;
+    if (response.body != "Auth Error") {
+      var sonuc = jsonDecode(response.body);
+      int kulID = int.parse(sonuc['kulID']);
+      if (kulID != 10) {
+        KULDATA.kulEmail = kulEmail;
+        KULDATA.kulId = kulID;
+        await kullverisicek();
+        return true;
+      } else
+        return false;
+    }
+    else
+    return false;
   }
 
   kullverisicek() async {
@@ -73,7 +77,7 @@ class ApiDatabase {
     }
   }
 
-   mesajGonder(String mesaj) async {
+  mesajGonder(String mesaj) async {
     KontrolDonus mesajsonuc = await DBProvider.db.mesajKontrol(mesaj);
     var digest = sha1.convert(utf8.encode(KULDATA.kulEmail));
     if (!mesajsonuc.issame) {
@@ -111,8 +115,9 @@ class ApiDatabase {
       return donecek;
       //return Rmesaj(gonderenid: int.parse(jsondata['GonderenId']),mesaj: jsondata['Mesaj'],mindex: int.parse(jsondata['MESAJINDEX']),isnull: false);
     } else {
-      Rmesaj donecek = new Rmesaj(gonderenid: 0, mesaj: "0", mindex: 0, isnull: true);
-      List<Rmesaj> doeceklist=new List<Rmesaj>();
+      Rmesaj donecek =
+          new Rmesaj(gonderenid: 0, mesaj: "0", mindex: 0, isnull: true);
+      List<Rmesaj> doeceklist = new List<Rmesaj>();
       doeceklist.add(donecek);
       return doeceklist;
     }
@@ -137,5 +142,16 @@ class ApiDatabase {
     });
     var sonuc = jsonDecode(response.body);
     return sonuc['bitisControl'];
+  }
+
+  kayit(String kulAd,String kulSoyad,String kulEmail,String kulSifre) async {
+    var response = await post("http://gelengigames.com/deneme.php", body: {
+      'kulAd': kulAd,
+      'kulSoyad': kulSoyad,
+      'kulEmail': kulEmail,
+      'kulSifre': kulSifre,
+      'method': 'kayit',
+    });
+    print(response.body);
   }
 }
