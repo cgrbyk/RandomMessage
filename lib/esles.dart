@@ -5,6 +5,11 @@ import 'ApiDatabase.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'mesajlasma.dart';
 import 'KULDATA.dart';
+<<<<<<< HEAD
+import 'utils.dart';
+import 'settings.dart';
+=======
+>>>>>>> 27cceb20ff13aa23b5ba2abc94906d2c1876b41c
 
 class Esles extends StatefulWidget {
   @override
@@ -32,6 +37,114 @@ class EslesmeEkrani extends State<Esles> {
     }
   }
 
+<<<<<<< HEAD
+  Widget settings() {
+    return SizedBox(
+      width: screenAwareSize(140, context),
+      height: 100,
+      child: RaisedButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        onPressed: () {
+           Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Settings()));
+        },
+        padding: EdgeInsets.all(12),
+        color: Colors.deepPurpleAccent,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.settings,
+              color: Colors.white,
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text('Ayarlar',
+                style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.white))
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget profile() {
+    return SizedBox(
+      width: screenAwareSize(140, context),
+      height: 100,
+      child: RaisedButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        onPressed: () {},
+        padding: EdgeInsets.all(12),
+        color: Colors.deepOrangeAccent,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.person,
+              color: Colors.white,
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text('Profil',
+                style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.white))
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget eslesButton() {
+    return SizedBox(
+      width: screenAwareSize(300, context),
+      height: 100,
+      child: RaisedButton(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        onPressed: () async {
+          vil = true;
+          String sonuc = await _uzakDatabase.esles();
+          if (sonuc == "20") {
+            KULDATA.mesajid = await _uzakDatabase.eslesmeControl();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Mesajlasma()),
+            );
+          } else if (sonuc == "30") {
+            while (true) {
+              await Future.delayed(Duration(seconds: 2));
+              print("2 saniye");
+              String sonuc = await _uzakDatabase.eslesmeControl();
+              if (sonuc != "1") {
+                KULDATA.mesajid = sonuc;
+                break;
+              }
+            }
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Mesajlasma()),
+            );
+          }
+        },
+        padding: EdgeInsets.all(12),
+        color: Colors.blueAccent,
+        child: Text('Eşleş',
+=======
   @override
   Widget build(BuildContext context) {
     final eslesButton = Padding(
@@ -44,17 +157,53 @@ class EslesmeEkrani extends State<Esles> {
           elevation: 2.0,
           child: Text(
             'Eşleş',
+>>>>>>> 27cceb20ff13aa23b5ba2abc94906d2c1876b41c
             style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.bold,
+<<<<<<< HEAD
+                fontSize: 20,
+                color: Colors.white)),
+      ),
+    );
+  }
+
+  Widget title() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 40.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Text(
+              'Random',
+              style: TextStyle(
+                  fontFamily: 'Montserrat', fontSize: 50, color: Colors.white),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Text(
+              'Message',
+              style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 70,
+                  color: Colors.white),
+            ),
+          ),
+        ],
+=======
                 fontSize: 20),
           ),
           onPressed: () async {
             vil = true;
             String sonuc = await _uzakDatabase.esles();
-            if (sonuc == "20") {
+            if (sonuc == "20") {             
               KULDATA.mesajid = await _uzakDatabase.eslesmeControl();
+              KULDATA.ortakAdi = await _uzakDatabase.ortak(KULDATA.mesajid);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => Mesajlasma()),
@@ -65,6 +214,7 @@ class EslesmeEkrani extends State<Esles> {
                 print("2 saniye");
                 String sonuc = await _uzakDatabase.eslesmeControl();
                 if (sonuc != "1") {
+                  KULDATA.ortakAdi = await _uzakDatabase.ortak(sonuc);
                   KULDATA.mesajid = sonuc;
                   break;
                 }
@@ -78,6 +228,7 @@ class EslesmeEkrani extends State<Esles> {
           padding: EdgeInsets.all(12),
           color: Colors.lightBlueAccent,
         ),
+>>>>>>> 27cceb20ff13aa23b5ba2abc94906d2c1876b41c
       ),
     );
     final spinner = Visibility(
@@ -94,6 +245,46 @@ class EslesmeEkrani extends State<Esles> {
           backgroundColor: Colors.lightBlueAccent,
         ),
         body: Container(
+<<<<<<< HEAD
+          width: screenAwareSize(MediaQuery.of(context).size.width, context),
+          child: Column(
+            //mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              Container(
+                height: screenAwareSize(200, context),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[title()],
+                ),
+              ),
+              SizedBox(
+                height: screenAwareSize(40, context),
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  eslesButton(),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      profile(),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      settings()
+                    ],
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+=======
           decoration: BoxDecoration(
             gradient: LinearGradient(
             begin: Alignment.topRight,
@@ -173,5 +364,6 @@ class EslesmeEkrani extends State<Esles> {
             spinner
           ]),
         ));
+>>>>>>> 27cceb20ff13aa23b5ba2abc94906d2c1876b41c
   }
 }
