@@ -1,10 +1,15 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'ApiDatabase.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'mesajlasma.dart';
 import 'KULDATA.dart';
+<<<<<<< HEAD
 import 'utils.dart';
 import 'settings.dart';
+=======
+>>>>>>> 27cceb20ff13aa23b5ba2abc94906d2c1876b41c
 
 class Esles extends StatefulWidget {
   @override
@@ -23,7 +28,7 @@ class EslesmeEkrani extends State<Esles> {
 
   void ilkGiris() async {
     String sonuc = await _uzakDatabase.eslesmeControl();
-    if (sonuc != "1" && sonuc != null) {
+    if (sonuc != "1" && sonuc!=null ) {
       KULDATA.mesajid = sonuc;
       Navigator.push(
         context,
@@ -32,6 +37,7 @@ class EslesmeEkrani extends State<Esles> {
     }
   }
 
+<<<<<<< HEAD
   Widget settings() {
     return SizedBox(
       width: screenAwareSize(140, context),
@@ -138,9 +144,25 @@ class EslesmeEkrani extends State<Esles> {
         padding: EdgeInsets.all(12),
         color: Colors.blueAccent,
         child: Text('Eşleş',
+=======
+  @override
+  Widget build(BuildContext context) {
+    final eslesButton = Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.0),
+      child: ButtonTheme(
+        minWidth: 200.0,
+        height: 100.0,
+        child: RaisedButton(
+          shape: CircleBorder(),
+          elevation: 2.0,
+          child: Text(
+            'Eşleş',
+>>>>>>> 27cceb20ff13aa23b5ba2abc94906d2c1876b41c
             style: TextStyle(
+                color: Colors.white,
                 fontFamily: 'Montserrat',
                 fontWeight: FontWeight.bold,
+<<<<<<< HEAD
                 fontSize: 20,
                 color: Colors.white)),
       ),
@@ -173,30 +195,57 @@ class EslesmeEkrani extends State<Esles> {
             ),
           ),
         ],
+=======
+                fontSize: 20),
+          ),
+          onPressed: () async {
+            vil = true;
+            String sonuc = await _uzakDatabase.esles();
+            if (sonuc == "20") {             
+              KULDATA.mesajid = await _uzakDatabase.eslesmeControl();
+              KULDATA.ortakAdi = await _uzakDatabase.ortak(KULDATA.mesajid);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Mesajlasma()),
+              );
+            } else if (sonuc == "30") {
+              while (true) {
+                await Future.delayed(Duration(seconds: 2));
+                print("2 saniye");
+                String sonuc = await _uzakDatabase.eslesmeControl();
+                if (sonuc != "1") {
+                  KULDATA.ortakAdi = await _uzakDatabase.ortak(sonuc);
+                  KULDATA.mesajid = sonuc;
+                  break;
+                }
+              }
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Mesajlasma()),
+              );
+            }
+          },
+          padding: EdgeInsets.all(12),
+          color: Colors.lightBlueAccent,
+        ),
+>>>>>>> 27cceb20ff13aa23b5ba2abc94906d2c1876b41c
       ),
     );
-  }
+    final spinner = Visibility(
+        visible: vil,
+        child: SpinKitRipple(
+          color: Colors.white,
+          size: 50,
+        ));
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      color: Color(0xFF263d5a),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
+    return Scaffold(
+        resizeToAvoidBottomPadding: false,
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
           elevation: 0.0,
-          leading: IconButton(
-            icon: Icon(
-              Icons.menu,
-              size: screenAwareSize(20.0, context),
-              color: Colors.white,
-            ),
-            onPressed: () {},
-          ),
+          backgroundColor: Colors.lightBlueAccent,
         ),
         body: Container(
+<<<<<<< HEAD
           width: screenAwareSize(MediaQuery.of(context).size.width, context),
           child: Column(
             //mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -235,5 +284,86 @@ class EslesmeEkrani extends State<Esles> {
         ),
       ),
     );
+=======
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            stops: [0.1, 0.5, 0.7, 0.9],
+            colors: [
+              Colors.lightBlueAccent,
+              Colors.lightBlue,
+              Colors.blueAccent,
+              Colors.blue,
+            ],
+          )),
+          child: Column(children: <Widget>[
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 20.0),
+              height: MediaQuery.of(context).size.height / 1.4,
+              padding: EdgeInsets.only(top: 10, left: 8, right: 8),
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  SizedBox(
+                    width: 15,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(32)),
+                    width: MediaQuery.of(context).size.width / 1.2,
+                    child: ListView(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.only(
+                          left: 24.0, right: 24.0, top: 24.0, bottom: 24.0),
+                      children: <Widget>[
+                        Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Random',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                                color: Colors.black),
+                          ),
+                        ),
+                        SizedBox(height: 16.0),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Message',
+                            style: TextStyle(
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 50,
+                                color: Colors.black),
+                          ),
+                        ),
+                        SizedBox(height: 100.0),
+                        eslesButton
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(32)),
+                    width: MediaQuery.of(context).size.width / 1.2,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                ],
+              ),
+            ),
+            spinner
+          ]),
+        ));
+>>>>>>> 27cceb20ff13aa23b5ba2abc94906d2c1876b41c
   }
 }

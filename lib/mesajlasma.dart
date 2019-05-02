@@ -107,7 +107,7 @@ class SecondRoute extends State<Mesajlasma> with WidgetsBindingObserver {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.lightBlueAccent,
-        title: Text(KULDATA.kulId.toString() + "Hos Geldiniz"),
+        title: Text(KULDATA.ortakAdi + " ile konuşuyorsun"),
         actions: <Widget>[
           new IconButton(
             icon: new Icon(Icons.close),

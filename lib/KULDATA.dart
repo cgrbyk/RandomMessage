@@ -4,4 +4,5 @@ class KULDATA{
   static String kulAdi;
   static String kulSoyad;
   static String mesajid;
+  static String ortakAdi;
 }

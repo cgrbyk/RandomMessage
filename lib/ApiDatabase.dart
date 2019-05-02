@@ -145,6 +145,19 @@ class ApiDatabase {
     return sonuc['bitisControl'];
   }
 
+  ortak(String mesajId) async
+  {
+    var digest = sha1.convert(utf8.encode(KULDATA.kulEmail));
+    final response = await post("http://gelengigames.com/deneme.php", body: {
+      'kulID': KULDATA.kulId.toString(),
+      'mesajID' : mesajId,
+      'method': 'ortak',
+      'auth': digest.toString()
+    });
+    var sonuc = jsonDecode(response.body);
+    return sonuc['KullaniciAdi'];
+  }
+
   kayit(String kulAd,String kulSoyad,String kulEmail,String kulSifre) async {
     var response = await post("http://gelengigames.com/deneme.php", body: {
       'kulAd': kulAd,
