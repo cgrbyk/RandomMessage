@@ -44,6 +44,7 @@ flutter:
     - assets/facebook.png
     - assets/facebookText.png
     - assets/google.png
+    - assets/sedan.PNG
   fonts:
     - family: Montserrat
       fonts:

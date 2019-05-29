@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:random_message/profile.dart';
 import 'ApiDatabase.dart';
 import 'mesajlasma.dart';
 import 'KULDATA.dart';
 import 'utils.dart';
-import 'settings.dart';
+import 'profile.dart';
 
 class Esles extends StatefulWidget {
   @override
@@ -30,76 +31,6 @@ class EslesmeEkrani extends State<Esles> {
         MaterialPageRoute(builder: (context) => Mesajlasma()),
       );
     }
-  }
-
-  Widget settings() {
-    return SizedBox(
-      width: screenAwareSize(140, context),
-      height: 100,
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        onPressed: () {
-           Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Settings()));
-        },
-        padding: EdgeInsets.all(12),
-        color: Colors.deepPurpleAccent,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              Icons.settings,
-              color: Colors.white,
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Text('Ayarlar',
-                style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.white))
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget profile() {
-    return SizedBox(
-      width: screenAwareSize(140, context),
-      height: 100,
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        onPressed: () {},
-        padding: EdgeInsets.all(12),
-        color: Colors.deepOrangeAccent,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              Icons.person,
-              color: Colors.white,
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Text('Profil',
-                style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.white))
-          ],
-        ),
-      ),
-    );
   }
 
   Widget eslesButton() {
@@ -187,14 +118,32 @@ class EslesmeEkrani extends State<Esles> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0.0,
-          leading: IconButton(
-            icon: Icon(
-              Icons.menu,
-              size: screenAwareSize(20.0, context),
-              color: Colors.white,
-            ),
-            onPressed: () {},
-          ),
+          leading: Container(),
+          actions: <Widget>[
+            
+            Padding(
+              padding: const EdgeInsets.fromLTRB(5,5,5,0),
+              child: InkWell(
+                child: Hero(
+                  tag: 'profile',
+                  child: Container(
+                    height: 50.0,
+                    width: 50.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25.0),
+                      image: DecorationImage(
+                        image: AssetImage('assets/sedan.PNG'),
+                      ),
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => new ProfilePage()));
+                },
+              ),
+            )
+          ],
         ),
         body: Container(
           width: screenAwareSize(MediaQuery.of(context).size.width, context),
@@ -215,19 +164,6 @@ class EslesmeEkrani extends State<Esles> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   eslesButton(),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      profile(),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      settings()
-                    ],
-                  ),
                 ],
               )
             ],
