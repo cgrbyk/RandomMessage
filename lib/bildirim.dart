@@ -15,13 +15,13 @@ class Bildirim {
         onSelectNotification: onSelectNotification);
   }
 
-  Future onSelectNotification(String payload) async {
+  onSelectNotification(String payload) async {
     if (payload != null) {
       print('notification payload: ' + payload);
     }
   }
 
-  Future onDidRecieveLocationLocation(
+  onDidRecieveLocationLocation(
       int id, String title, String body, String payload) {
     print("title :" + title + " body :" + payload);
   }
