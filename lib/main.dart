@@ -96,7 +96,7 @@ class _MyAppState extends State<MyApp> {
               Align(
                 alignment: Alignment.center,
                 child: Text(
-                  'Random',
+                  'Randomm',
                   style: TextStyle(
                       fontFamily: 'Montserrat',
                       fontWeight: FontWeight.bold,
