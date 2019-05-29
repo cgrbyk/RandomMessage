@@ -155,7 +155,7 @@ class ApiDatabase {
       'auth': digest.toString()
     });
     var sonuc = jsonDecode(response.body);
-    return sonuc['KullaniciAdi'];
+    KULDATA.ortakAdi = sonuc['KullaniciAdi'];
   }
 
   kayit(String kulAd,String kulSoyad,String kulEmail,String kulSifre) async {

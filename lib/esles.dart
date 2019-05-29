@@ -46,6 +46,7 @@ class EslesmeEkrani extends State<Esles> {
           String sonuc = await _uzakDatabase.esles();
           if (sonuc == "20") {
             KULDATA.mesajid = await _uzakDatabase.eslesmeControl();
+            await _uzakDatabase.ortak(KULDATA.mesajid);
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => Mesajlasma()),
