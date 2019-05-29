@@ -70,22 +70,23 @@ class SecondRoute extends State<Mesajlasma> with WidgetsBindingObserver {
     Bildirim bil = new Bildirim();
     _everySecond = Timer.periodic(Duration(seconds: 1), (Timer t) async {
       Client rnd = Client();
-      mesajlar= await _uzakDatabase.mesajcek();
-      if (!mesajlar[0].isnull) {
+      List<Rmesaj> gelenmesaj = await _uzakDatabase.mesajcek();
+      if (!gelenmesaj[0].isnull) {
         if (_lifecycleState == AppLifecycleState.paused) {
-          bil.bildirimGonder("Mesaj Geldi", mesajlar[0].mesaj,
-              mesajlar[0].mindex.toString());
+          bil.bildirimGonder(
+              "Mesaj Geldi", gelenmesaj[0].mesaj, gelenmesaj[0].mindex.toString());
         }
-        for (Rmesaj gelenmesaj in mesajlar) {
+        for (Rmesaj gelenmesaj in gelenmesaj) {
           _uzakDatabase.incmindex();
           rnd.kelime = " " + gelenmesaj.mesaj;
           rnd.index = gelenmesaj.mindex;
           rnd.gonderenid = gelenmesaj.gonderenid;
           await DBProvider.db.newClient(rnd);
-        }
+        }       
+        setState(() {});
         sc.animateTo(sc.position.maxScrollExtent,
             duration: Duration(seconds: 1), curve: Curves.ease);
-        setState(() {});
+            mesajlar.addAll(gelenmesaj);
       }
     });
     _every5Second = Timer.periodic(Duration(seconds: 5), (Timer t) async {
@@ -106,7 +107,7 @@ class SecondRoute extends State<Mesajlasma> with WidgetsBindingObserver {
       appBar: AppBar(
         elevation: 0.0,
         backgroundColor: Colors.lightBlueAccent,
-        title: Text(KULDATA.ortakAdi + " ile konuşuyorsun"),
+        title: Text(KULDATA.ortakAdi ?? " " + " ile konuşuyorsun"),
         actions: <Widget>[
           new IconButton(
             icon: new Icon(Icons.close),
@@ -121,93 +122,73 @@ class SecondRoute extends State<Mesajlasma> with WidgetsBindingObserver {
         ],
         leading: new Container(),
       ),
-      body: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          stops: [0.1, 0.5, 0.7, 0.9],
-          colors: [
-            Colors.lightBlueAccent,
-            Colors.lightBlue,
-            Colors.blueAccent,
-            Colors.blue,
-          ],
-        )),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(5.0, 16.0, 5.0, 0.0),
-          child: ListView(
-            shrinkWrap: true,
-            children: <Widget>[
-              new Column(
-                children: <Widget>[
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: mesajlar.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Card(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16)),
-                              color: Colors.white,
-                              child: SizedBox(
-                                  height: 50,
-                                  child: Align(
-                                      alignment: algPicker(mesajlar[index]),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 16.0, right: 16.0),
-                                        child: Text(mesajlar[index].mesaj + " ",
-                                            style: TextStyle(
-                                              fontFamily: 'Montserrat',
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black,
-                                            )),
-                                      )))),
-                          //leading: Text(item.index.toString()),
-                        );
-                      },
-                    ),
-                  )
-                ],
-              ),
-              TextField(
-                controller: girilen,
-                autofocus: false,
-                decoration: InputDecoration(
-                  hintText: 'Mesajını Yaz',
-                  contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(32.0)),
-                ),
-                textInputAction: TextInputAction.send,
-                maxLength: 60,
-                onSubmitted: (String s) async {
-                  Client rnd = Client(
-                      kelime: girilen.value.text + " ",
-                      gonderenid: KULDATA.kulId);
-                  KontrolDonus ayni = await _uzakDatabase.mesajGonder(s);
-                  if (!ayni.issame)
-                    await DBProvider.db.newClient(rnd);
-                  else {
-                    _showDialog(ayni.kelime, ayni.mesaj);
-                  }
-                  girilen.clear();
-                  FocusScope.of(context).requestFocus(new FocusNode());
-                  sc.animateTo(sc.position.maxScrollExtent,
-                      duration: Duration(milliseconds: 500),
-                      curve: Curves.ease);
-                  setState(() {});
-                },
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Montserrat',
-                    fontSize: 20),
-              )
-            ],
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView.builder(
+              controller: sc,
+              itemCount: mesajlar.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(16)),
+                      color: Colors.white,
+                      child: SizedBox(
+                          height: 50,
+                          child: Align(
+                              alignment: algPicker(mesajlar[index]),
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 16.0, right: 16.0),
+                                child: Text(mesajlar[index].mesaj + " ",
+                                    style: TextStyle(
+                                      fontFamily: 'Montserrat',
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    )),
+                              )))),
+                  //leading: Text(item.index.toString()),
+                );
+              },
+            ),
           ),
-        ),
+          TextField(
+            controller: girilen,
+            autofocus: false,
+            decoration: InputDecoration(
+              hintText: 'Mesajını Yaz',
+              contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+            ),
+            textInputAction: TextInputAction.send,
+            maxLength: 60,
+            onSubmitted: (String s) async {
+              Client rnd = Client(
+                  kelime: girilen.value.text + " ", gonderenid: KULDATA.kulId);
+              KontrolDonus ayni = await _uzakDatabase.mesajGonder(s);
+              if (!ayni.issame)
+              {
+                await DBProvider.db.newClient(rnd);
+                mesajlar.add(new Rmesaj(gonderenid: rnd.gonderenid,mesaj: rnd.kelime,mindex: rnd.index,isnull: false));
+              }
+              else {
+                _showDialog(ayni.kelime, ayni.mesaj);
+              }
+              girilen.clear();
+              FocusScope.of(context).requestFocus(new FocusNode());              
+              setState(() {});
+              sc.animateTo(sc.position.maxScrollExtent,
+                  duration: Duration(milliseconds: 500), curve: Curves.ease);
+            },
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Montserrat',
+                fontSize: 20),
+          )
+        ],
       ),
     );
   }
