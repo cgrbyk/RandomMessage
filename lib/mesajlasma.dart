@@ -19,6 +19,7 @@ class SecondRoute extends State<Mesajlasma> with WidgetsBindingObserver {
   ScrollController sc = new ScrollController();
   Timer _everySecond;
   Timer _every5Second;
+  List<Rmesaj> mesajlar = List<Rmesaj>();
 
   AppLifecycleState _lifecycleState;
   @override
@@ -28,7 +29,7 @@ class SecondRoute extends State<Mesajlasma> with WidgetsBindingObserver {
     });
   }
 
-  void _showDialog(String title,String message) {
+  void _showDialog(String title, String message) {
     //
     // flutter defined function
     showDialog(
@@ -37,8 +38,7 @@ class SecondRoute extends State<Mesajlasma> with WidgetsBindingObserver {
         // return object of type Dialog
         return AlertDialog(
           title: new Text(title),
-          content: new Text(
-              message),
+          content: new Text(message),
           actions: <Widget>[
             // usually buttons at the bottom of the dialog
             new FlatButton(
@@ -53,7 +53,7 @@ class SecondRoute extends State<Mesajlasma> with WidgetsBindingObserver {
     );
   }
 
-  Alignment algPicker(Client c) {
+  Alignment algPicker(Rmesaj c) {
     //print(c.gonderenid.toString()+"----"+KULDATA.kulId.toString());
     if (c.gonderenid == KULDATA.kulId) {
       return Alignment.centerRight;
@@ -70,14 +70,13 @@ class SecondRoute extends State<Mesajlasma> with WidgetsBindingObserver {
     Bildirim bil = new Bildirim();
     _everySecond = Timer.periodic(Duration(seconds: 1), (Timer t) async {
       Client rnd = Client();
-      List<Rmesaj> gelenmesajDizi = new List<Rmesaj>();
-      gelenmesajDizi = await _uzakDatabase.mesajcek();
-      if (!gelenmesajDizi[0].isnull) {
+      mesajlar= await _uzakDatabase.mesajcek();
+      if (!mesajlar[0].isnull) {
         if (_lifecycleState == AppLifecycleState.paused) {
-          bil.bildirimGonder("Mesaj Geldi", gelenmesajDizi[0].mesaj,
-              gelenmesajDizi[0].mindex.toString());
+          bil.bildirimGonder("Mesaj Geldi", mesajlar[0].mesaj,
+              mesajlar[0].mindex.toString());
         }
-        for (Rmesaj gelenmesaj in gelenmesajDizi) {
+        for (Rmesaj gelenmesaj in mesajlar) {
           _uzakDatabase.incmindex();
           rnd.kelime = " " + gelenmesaj.mesaj;
           rnd.index = gelenmesaj.mindex;
@@ -140,94 +139,71 @@ class SecondRoute extends State<Mesajlasma> with WidgetsBindingObserver {
           child: ListView(
             shrinkWrap: true,
             children: <Widget>[
-              new Container(
-                  height: MediaQuery.of(context).size.height / 5 * 4,
-                  child: FutureBuilder<List<Client>>(
-                    future: DBProvider.db.getAllClients(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<List<Client>> snapshot) {
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                          controller: sc,
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            Client item = snapshot.data[index];
-                            var dismissible = Dismissible(
-                              key: UniqueKey(),
-                              background: Container(color: Colors.red),
-                              onDismissed: (dissmissdirection) async {
-                                print("Dissmisssed " + index.toString());
-                                await DBProvider.db.deleteFromIndex(item.index);
-
-                                setState(() {});
-                              },
-                              child: ListTile(
-                                title: Card(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(16)),
-                                    color: Colors.white,
-                                    child: SizedBox(
-                                        height: 50,
-                                        child: Align(
-                                            alignment: algPicker(item),
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 16.0, right: 16.0),
-                                              child: Text(item.kelime + " ",
-                                                  style: TextStyle(
-                                                    fontFamily: 'Montserrat',
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black,
-                                                  )),
-                                            )))),
-                                //leading: Text(item.index.toString()),
-                              ),
-                            );
-                            return dismissible;
-                          },
+              new Column(
+                children: <Widget>[
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: mesajlar.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Card(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16)),
+                              color: Colors.white,
+                              child: SizedBox(
+                                  height: 50,
+                                  child: Align(
+                                      alignment: algPicker(mesajlar[index]),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 16.0, right: 16.0),
+                                        child: Text(mesajlar[index].mesaj + " ",
+                                            style: TextStyle(
+                                              fontFamily: 'Montserrat',
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                            )),
+                                      )))),
+                          //leading: Text(item.index.toString()),
                         );
-                      } else {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                    },
-                  )),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 48.0),
-                child: TextField(
-                  controller: girilen,
-                  autofocus: false,
-                  decoration: InputDecoration(
-                    hintText: 'Mesajını Yaz',
-                    contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(32.0)),
-                  ),
-                  textInputAction: TextInputAction.send,
-                  maxLength: 60,
-                  onSubmitted: (String s) async {
-                    Client rnd = Client(
-                        kelime: girilen.value.text + " ",
-                        gonderenid: KULDATA.kulId);                  
-                    KontrolDonus ayni = await _uzakDatabase.mesajGonder(s);
-                    if (!ayni.issame)
-                      await DBProvider.db.newClient(rnd);
-                    else {
-                      _showDialog(ayni.kelime, ayni.mesaj);
-                    }
-                    girilen.clear();
-                    FocusScope.of(context).requestFocus(new FocusNode());
-                    sc.animateTo(sc.position.maxScrollExtent,
-                        duration: Duration(milliseconds: 500),
-                        curve: Curves.ease);
-                    setState(() {});
-                  },
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Montserrat',
-                      fontSize: 20),
+                      },
+                    ),
+                  )
+                ],
+              ),
+              TextField(
+                controller: girilen,
+                autofocus: false,
+                decoration: InputDecoration(
+                  hintText: 'Mesajını Yaz',
+                  contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(32.0)),
                 ),
+                textInputAction: TextInputAction.send,
+                maxLength: 60,
+                onSubmitted: (String s) async {
+                  Client rnd = Client(
+                      kelime: girilen.value.text + " ",
+                      gonderenid: KULDATA.kulId);
+                  KontrolDonus ayni = await _uzakDatabase.mesajGonder(s);
+                  if (!ayni.issame)
+                    await DBProvider.db.newClient(rnd);
+                  else {
+                    _showDialog(ayni.kelime, ayni.mesaj);
+                  }
+                  girilen.clear();
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                  sc.animateTo(sc.position.maxScrollExtent,
+                      duration: Duration(milliseconds: 500),
+                      curve: Curves.ease);
+                  setState(() {});
+                },
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Montserrat',
+                    fontSize: 20),
               )
             ],
           ),

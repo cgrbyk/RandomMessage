@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'esles.dart';
 import 'ApiDatabase.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 void main() =>
     runApp(MaterialApp(debugShowCheckedModeBanner: false, home: MyApp()));
@@ -303,19 +304,17 @@ class _MyAppState extends State<MyApp> {
         },
         padding: EdgeInsets.all(12),
         color: Colors.lightBlueAccent,
-        child: Row(children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 120.0),
-            child: Text(
-              'Kayıt Ol',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20),
-            ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+          Text(
+            'Kayıt Ol',
+            style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.bold,
+                fontSize: 20),
           ),
-          SizedBox(width: 60),
           Icon(
             Icons.navigate_next,
             color: Colors.white,
@@ -349,19 +348,17 @@ class _MyAppState extends State<MyApp> {
         },
         padding: EdgeInsets.all(12),
         color: Colors.lightBlueAccent,
-        child: Row(children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 120.0),
-            child: Text(
-              'Giriş Yap',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontFamily: 'Montserrat',
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20),
-            ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[          
+          Text(
+            'Giriş Yap',
+            style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.bold,
+                fontSize: 20),
           ),
-          SizedBox(width: 40),
           Icon(
             Icons.navigate_next,
             color: Colors.white,
@@ -382,14 +379,15 @@ class _MyAppState extends State<MyApp> {
         padding: EdgeInsets.all(12),
         color: Color(0xFF3b5998),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             ImageIcon(
               AssetImage("assets/facebook.png"),
               color: Colors.white,
             ),
-            SizedBox(width: 20),
-            Text(
+            AutoSizeText(
               'Facebook ile giriş yap',
+              maxLines: 1,
               style: TextStyle(
                   fontFamily: 'Montserrat',
                   fontWeight: FontWeight.bold,
@@ -407,7 +405,7 @@ class _MyAppState extends State<MyApp> {
       child: Text(
         'Şifremi Unuttum',
         style: TextStyle(
-            color: Colors.black87, fontFamily: 'Montserrat', fontSize: 16),
+            color: Colors.grey, fontFamily: 'Montserrat', fontSize: 16),
       ),
       onPressed: () {},
     );
